@@ -2,6 +2,9 @@ import app from "../src/app";
 import * as dotenv from "dotenv";
 
 import createConnection from "../database/connect";
+import DailyService from "../src/services/daily.co/daily.service";
+import TimeHandler from "../src/utils/timehandler.utils";
+import { daily_config } from "../src/config/daily.config";
 
 dotenv.config();
 const port: string = process.env.PORT;
