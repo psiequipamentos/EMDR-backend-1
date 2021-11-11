@@ -14,7 +14,6 @@ import {
 } from "../../constants/daily.constants";
 
 export default class DailyService {
-  private dailyConfig;
   private apiService: ApiService;
   private timeHandler: TimeHandler;
   constructor() {
