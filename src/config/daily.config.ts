@@ -5,7 +5,7 @@ export const daily_config: DailyConfig = {
 };
 
 export const daily_room_config: DailyConfig = {
-  room_expiration: 5,
+  room_expiration_time: 2, // * hours
   enable_chat: true,
   max_participants: 2,
 };

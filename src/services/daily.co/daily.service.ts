@@ -8,10 +8,6 @@ import * as short_uuid from "short-uuid";
 import "../../config/daily.config";
 import ApiService from "../api.service";
 import TimeHandler from "../../utils/timehandler.utils";
-import {
-  DailyGetterPromiseResponse,
-  DailyResponseError,
-} from "../../constants/daily.constants";
 
 export default class DailyService {
   private apiService: ApiService;
@@ -20,10 +16,13 @@ export default class DailyService {
     this.apiService = new ApiService();
     this.timeHandler = new TimeHandler();
   }
-
-  async createRoom(): Promise<any> {
+  /**
+   * * Create a new room
+   * @returns Created Room information
+   */
+  async createRoom(): Promise<iDailyServiceReturn> {
     const expires: number = this.timeHandler.dateToTimestamp(
-      daily_config.room_expiration
+      daily_config.room_time_expiration
     );
     const room_name: string = short_uuid.generate();
     const properties: object = {
@@ -38,30 +37,43 @@ export default class DailyService {
         "",
         { name: room_name, properties }
       );
-      return daily_create_room_response;
+      return { error: false, data: daily_create_room_response };
     } catch (daily_create_room_response_error) {
       console.error(daily_create_room_response_error);
+      return { error: true, data: daily_create_room_response_error.error };
     }
   }
-  async allRooms(): Promise<DailyGetterPromiseResponse | DailyResponseError> {
+  /**
+   * Lists all created rooms
+   * @returns All created Rooms
+   */
+  async allRooms(): Promise<iDailyServiceReturn> {
     try {
       const all_created_rooms: any = await this.apiService.RequestData(
         "GET",
         daily_endpoints.rooms
       );
       return {
-        total_rooms: all_created_rooms.total_count,
-        rooms: all_created_rooms.data,
+        error: false,
+        data: {
+          total_rooms: all_created_rooms.total_count,
+          rooms: all_created_rooms.data,
+        },
       };
     } catch (daily_all_rooms_response_error) {
-      const erro: DailyResponseError = {
-        error: daily_all_rooms_response_error.error,
-        message: daily_all_rooms_response_error.info,
-      };
-      return erro;
+      return { error: true, data: daily_all_rooms_response_error.error };
     }
   }
-  async createRoomToken(room_name: string, exp: number): Promise<string> {
+  /**
+   *
+   * @param room_name short uuid generated name
+   * @param exp unix timestamp token expiration
+   * @returns created token information
+   */
+  async createRoomToken(
+    room_name: string,
+    exp: number
+  ): Promise<iDailyServiceReturn> {
     try {
       const properties: { [key: string]: string | number } = {
         room_name,
@@ -73,15 +85,18 @@ export default class DailyService {
         "",
         { properties }
       );
-      return token;
+      return { error: false, data: token };
     } catch (daily_create_room_token_response_erro) {
       console.error(daily_create_room_token_response_erro);
+      return { error: true, data: daily_create_room_token_response_erro.error };
     }
   }
-
-  async meetingInfo(
-    room_name: string = ""
-  ): Promise<DailyGetterPromiseResponse | DailyResponseError> {
+  /**
+   *
+   * @param room_name short uuid generated name
+   * @returns specific room information
+   */
+  async meetingInfo(room_name: string = ""): Promise<iDailyServiceReturn> {
     if (room_name !== "") room_name = `room=${room_name}`;
     try {
       const all_meetings: any = await this.apiService.RequestData(
@@ -92,15 +107,14 @@ export default class DailyService {
         room_name
       );
       return {
-        total_meetings: all_meetings.total_count,
-        meetings: all_meetings.data,
+        error: false,
+        data: {
+          total_meetings: all_meetings.total_count,
+          meetings: all_meetings.data,
+        },
       };
     } catch (daily_all_mettings_response_error) {
-      const erro: DailyResponseError = {
-        error: daily_all_mettings_response_error.error,
-        message: daily_all_mettings_response_error.info,
-      };
-      return erro;
+      return { error: true, data: daily_all_mettings_response_error.error };
     }
   }
 }
