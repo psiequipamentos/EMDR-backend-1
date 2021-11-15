@@ -27,6 +27,10 @@ export default class DailyRoutes {
         "/meeting-info/:room_name",
         this.daily_controller.meetingInfo
       ),
+      deleteAllRooms: this.router.delete(
+        "/delete-all-rooms",
+        this.daily_controller.deleteAllRooms
+      ),
     };
   }
 }
