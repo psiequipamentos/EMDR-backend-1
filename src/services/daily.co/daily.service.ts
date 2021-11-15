@@ -117,4 +117,17 @@ export default class DailyService {
       return { error: true, data: daily_all_mettings_response_error.error };
     }
   }
+
+  async deleteRoom(room_name: string): Promise<iDailyServiceReturn> {
+    try {
+      const delete_room = await this.apiService.RequestData(
+        "DELETE",
+        daily_endpoints.rooms,
+        room_name
+      );
+      return { error: false, data: delete_room };
+    } catch (daily_delete_room_error) {
+      return { error: true, data: daily_delete_room_error.error };
+    }
+  }
 }

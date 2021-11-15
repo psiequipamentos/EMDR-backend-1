@@ -24,4 +24,17 @@ export default class DailyController {
 
     return res.status(error ? 500 : 200).send(data);
   };
+  deleteAllRooms = async (req: Request, res: Response) => {
+    const { error, data }: iDailyServiceReturn =
+      await this.daily_service.allRooms();
+    for (const { name } of data.rooms) {
+      try {
+        await this.daily_service.deleteRoom(name);
+        console.log(`room ${name} deleted`);
+      } catch (delete_room_error) {
+        console.error(delete_room_error.error);
+      }
+    }
+    return res.status(error ? 500 : 200).send(data);
+  };
 }
