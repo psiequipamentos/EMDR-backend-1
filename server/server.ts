@@ -14,7 +14,7 @@ createConnection("default")
   )
   .catch((database_connection_error) =>
     console.log(
-      ` ⚠ [database]: Default database was not connected! Error: ${database_connection_error.message}`
+      ` ⚠ [database]: Default database was not connected! Error: ${database_connection_error}`
     )
   );
 

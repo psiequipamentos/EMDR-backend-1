@@ -1,6 +1,6 @@
 import { Server as SocketServer } from "socket.io";
 import Sessions from "../../../models/Sessions";
-import SessionRepository from "../../../repository/session.repository";
+import SessionRepository from "../../../repository/session-repository";
 import Ball from "../ball";
 import Movements from "../movements";
 import { colors as ballColors } from "../config/ball.config";
