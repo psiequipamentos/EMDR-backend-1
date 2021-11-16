@@ -1,3 +1,3 @@
 export default class Ball {
-    public color: iBallColor;
+    public color: string;
 }
