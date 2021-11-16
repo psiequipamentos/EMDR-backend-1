@@ -1,6 +1,7 @@
 import { Server as SocketServer, Socket } from "socket.io";
 import Sessions from "../../../models/Sessions";
 import SessionRepository from "../../../repository/session.repository";
+
 import Movements from "../movements";
 
 export default class MovementWebSocketEvents {

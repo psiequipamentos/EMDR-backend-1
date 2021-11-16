@@ -1,16 +1,18 @@
-import { Column, Entity } from "typeorm";
+import { Column, Entity, ManyToOne } from "typeorm";
 import MasterModel from "./MasterModel";
+import Paciente from "./Paciente";
+import Psicologo from "./Psicologo";
 
 @Entity()
 export default class Sessions extends MasterModel {
   @Column({ nullable: false, unique: true })
   session_id: string;
 
-  @Column({ nullable: false })
-  psychologist: number; // TODO FK
+  @ManyToOne(()=> Psicologo, (psicologo) => psicologo.id )
+  psychologist: Psicologo;
 
-  @Column({ nullable: false })
-  patient: number; // TODO FK
+  @ManyToOne(()=> Paciente, (paciente) => paciente.id )
+  patient: Paciente;
 
   @Column()
   patient_socket_id: string;

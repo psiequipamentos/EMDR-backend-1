@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
 dotenv.config();
 
-const sync = process.env.SYNC ?? false;
+const sync = process.env.SYNC ? true : false;
 console.log(`🔃 [database sync]: ${sync}`);
 
 module.exports = {
