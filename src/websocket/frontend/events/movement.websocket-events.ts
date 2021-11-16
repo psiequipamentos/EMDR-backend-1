@@ -1,9 +1,8 @@
-import { Server as SocketServer } from "socket.io";
+import { Server as SocketServer, Socket } from "socket.io";
 import Sessions from "../../../models/Sessions";
-import SessionRepository from "../../../repository/session-repository";
-import Ball from "../ball";
+import SessionRepository from "../../../repository/session.repository";
+
 import Movements from "../movements";
-import { colors as ballColors } from "../config/ball.config";
 
 export default class MovementWebSocketEvents {
     private io: SocketServer;
@@ -17,8 +16,9 @@ export default class MovementWebSocketEvents {
         this.sessionRepository = new SessionRepository();
     }
     listenEvents() {
-        this.io.on("connection", (socket: any) => {
+        this.io.on("connection", (socket: Socket) => {
             const { id } = socket;
+            let socket_session_id: string = "";
             console.log(
                 `👾 [websocket]: User ${id} connected on Websocket Server.`
             );
@@ -26,18 +26,25 @@ export default class MovementWebSocketEvents {
              * * Join Session
              */
             socket.on("join-session", async ({ session_id, user }) => {
+                if (!session_id || !user) {
+                    console.error("lacks information");
+                    return false;
+                }
                 try {
                     const session: any =
                         await this.sessionRepository.readOneBySessionId(
                             session_id
                         );
-                    if (!session) return false;
+                    if (!session) {
+                        console.error("not found");
+                        return false;
+                    }
                     try {
                         await this.sessionRepository.update(session.id, {
                             [`${user.type}_socket_id`]: id,
                         });
                         console.log("Updated session.");
-                        socket.join(session.id);
+                        socket_session_id = session.session_id;
                     } catch (update_session_error) {
                         console.error(update_session_error);
                         // TODO emit not updated session;
@@ -48,10 +55,24 @@ export default class MovementWebSocketEvents {
                 }
             });
             /**
-             * * Visibility Handler
+             * * Ball Handler
              */
-            socket.on("Ball-Visibility", ({ room, visibility }) => {
-                socket.to(room).emit("Ball-visibility", { visibility });
+            socket.on("ball-handler", async (action: iAction) => {
+                try {
+                    const session: any =
+                        await this.sessionRepository.readOneBySessionId(
+                            socket_session_id
+                        );
+                    if (!session) {
+                        console.error("not found");
+                        return false;
+                    }
+                    this.io
+                        .to(session.patient_socket_id)
+                        .emit("ball-handler", action);
+                } catch (search_session_error) {
+                    console.error(search_session_error); // TODO emit not found session;
+                }
             });
             socket.on("disconnect", () =>
                 console.log(

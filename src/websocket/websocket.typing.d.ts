@@ -8,7 +8,7 @@ declare interface iWebsocketRoom {
     patient: iWebSocketUser;
 }
 
-declare interface iBallColor {
-    color_name: string;
-    hex_color: string;
+declare interface iAction {
+    property: string;
+    value: string;
 }
