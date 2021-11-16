@@ -1,7 +1,9 @@
 import { Server as SocketServer } from "socket.io";
 import Sessions from "../../../models/Sessions";
 import SessionRepository from "../../../repository/session.repository";
+import Ball from "../ball";
 import Movements from "../movements";
+import { colors as ballColors } from "../config/ball.config";
 
 export default class MovementWebSocketEvents {
     private io: SocketServer;
@@ -40,11 +42,11 @@ export default class MovementWebSocketEvents {
                         console.error(update_session_error);
                         // TODO emit not updated session;
                     }
+                    // * emit
                 } catch (search_session_error) {
                     console.error(search_session_error); // TODO emit not found session;
                 }
             });
-
             /**
              * * Visibility Handler
              */

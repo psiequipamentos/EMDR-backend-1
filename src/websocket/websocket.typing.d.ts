@@ -7,3 +7,8 @@ declare interface iWebsocketRoom {
     psychologist: iWebSocketUser;
     patient: iWebSocketUser;
 }
+
+declare interface iBallColor {
+    color_name: string;
+    hex_color: string;
+}
