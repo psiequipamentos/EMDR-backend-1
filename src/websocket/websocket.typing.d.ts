@@ -12,3 +12,24 @@ declare interface iAction {
     property: string;
     value: string;
 }
+
+declare interface iChatAction {
+    message: string;
+}
+
+declare interface iListener {
+    session: {
+        connection: string;
+        join_session: string;
+        disconnect;
+    };
+    ball?: {
+        handler: string;
+    };
+    chat?: {
+        new_message: string;
+    };
+    audio?: {
+        handler: string;
+    };
+}

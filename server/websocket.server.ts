@@ -2,6 +2,8 @@ import { Server as SocketServer } from "socket.io";
 import { createServer, Server } from "http";
 import * as dotenv from "dotenv";
 import MovementWebSocketEvents from "../src/websocket/frontend/events/movement.websocket-events";
+import WebSocket from "../src/websocket/websocket";
+import ChatWebSocketEvents from "../src/websocket/chat/chat.websocket-events";
 
 dotenv.config();
 
@@ -20,7 +22,8 @@ export default class WebsocketServer {
   }
 
   run = () => {
-    new MovementWebSocketEvents(this.io).listenEvents();
+    const web_socket = new WebSocket(this.io);
+    web_socket.start().then((socket_session_id) => web_socket.listenEvents());
     this.server.listen(this.port, () =>
       console.log(
         `🤝 [websocket server]: WebSocket server running at :${this.port}`
