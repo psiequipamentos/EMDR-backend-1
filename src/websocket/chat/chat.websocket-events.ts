@@ -18,7 +18,7 @@ export default class ChatWebSocketEvents {
     listenEvents() {
         const { id } = this.socket;
         /**
-         * * Ball Handler
+         * * Chat Handler
          */
         this.socket.on(
             this.ws_listeners.chat.new_message,
