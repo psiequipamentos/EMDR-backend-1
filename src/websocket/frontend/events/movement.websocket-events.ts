@@ -37,7 +37,7 @@ export default class MovementWebSocketEvents {
                     }
                     this.io
                         .to(session.paciente_socket_id)
-                        .emit("ball-handler", action);
+                        .emit(this.ws_listeners.ball.handler, action);
                 } catch (search_session_error) {
                     console.error(search_session_error); // TODO emit not found session;
                 }
@@ -61,7 +61,7 @@ export default class MovementWebSocketEvents {
                     }
                     this.io
                         .to(session.paciente_socket_id)
-                        .emit("audio-handler", action);
+                        .emit(this.ws_listeners.audio.handler, action);
                 } catch (search_session_error) {
                     console.error(search_session_error); // TODO emit not found session;
                 }
