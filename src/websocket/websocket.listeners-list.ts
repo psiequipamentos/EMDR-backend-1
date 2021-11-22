@@ -10,6 +10,9 @@ const MovementListeners: iListener = {
     ball: {
         handler: "ball-handler",
     },
+    audio: {
+        handler: "audio-handler"
+    }
 };
 
 const ChatListeners: iListener = {
