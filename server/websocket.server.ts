@@ -23,7 +23,8 @@ export default class WebsocketServer {
 
   run = () => {
     const web_socket = new WebSocket(this.io);
-    web_socket.start().then((socket_session_id) => web_socket.listenEvents());
+    console.log('connection')
+    web_socket.start();
     this.server.listen(this.port, () =>
       console.log(
         `🤝 [websocket server]: WebSocket server running at :${this.port}`

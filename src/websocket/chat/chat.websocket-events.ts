@@ -20,6 +20,7 @@ export default class ChatWebSocketEvents {
         /**
          * * Chat Handler
          */
+        console.log(this.ws_listeners.chat.new_message)
         this.socket.on(
             this.ws_listeners.chat.new_message,
             async (action: iChatAction) => {
@@ -41,7 +42,7 @@ export default class ChatWebSocketEvents {
                         .to(recipient_id)
                         .emit(this.ws_listeners.chat.new_message, action);
                 } catch (search_session_error) {
-                    console.error(search_session_error); // TODO emit not found session;
+                    console.log(search_session_error); // TODO emit not found session;
                 }
             }
         );
