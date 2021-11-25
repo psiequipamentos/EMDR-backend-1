@@ -9,10 +9,10 @@ export default class Sessions extends MasterModel {
   session_id: string;
 
   @ManyToOne(() => Psicologo, (psicologo) => psicologo.id)
-  psychologist: Psicologo;
+  psicologo: Psicologo;
 
   @ManyToOne(() => Paciente, (paciente) => paciente.id)
-  patient: Paciente;
+  paciente: Paciente;
 
   @Column()
   paciente_socket_id: string;

@@ -1,7 +1,8 @@
 import models from '../models/init'
-import MasterRepository from './master-repository'
+import AuthenticableEntities from './authenticable-entities';
 
-export default class PsicologoRepository extends MasterRepository {
+
+export default class PsicologoRepository extends AuthenticableEntities {
 
     constructor(){
         super(models.Psicologo);
