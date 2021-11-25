@@ -28,6 +28,7 @@ declare interface iListener {
     };
     chat?: {
         new_message: string;
+        update_messages:string
     };
     audio?: {
         handler: string;

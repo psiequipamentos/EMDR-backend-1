@@ -1,7 +1,8 @@
 import repositories from "../repository/init";
-import MasterController from "./master-controllers";
+import AuthenticableControllers from "./authenticable-controllers";
 
-export default class PsicologoControllers extends MasterController{
+
+export default class PsicologoControllers extends AuthenticableControllers{
     constructor(){
         super(new repositories.PsicologoRepository());
     }

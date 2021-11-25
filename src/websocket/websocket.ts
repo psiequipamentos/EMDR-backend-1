@@ -11,6 +11,7 @@ export default class WebSocket {
     private sessionRepository: SessionRepository;
     private socket_session_id: string;
     private socket: Socket;
+    public messages: any
     constructor(io: SocketServer) {
         this.io = io;
         this.ws_listeners = SessionListeners;
@@ -18,6 +19,7 @@ export default class WebSocket {
     }
 
     start() {
+        this.messages = []
             this.io.on(
                 this.ws_listeners.session.connection,
                 (socket: Socket) => {
@@ -36,6 +38,8 @@ export default class WebSocket {
                                 console.error("lacks information");
                                 return false;
                             }
+
+                            console.log(`THE USER IS : ${user.type}`)
                             try {
                                 const session: any =
                                     await this.sessionRepository.readOneBySessionId(
@@ -53,8 +57,9 @@ export default class WebSocket {
                                         }
                                     );
                                     console.log("Updated session.");
+                                    console.log(session.session_id)
                                     this.socket_session_id = session.session_id;
-                                
+                                    this.listenEvents(session.session_id, this.messages)
                                 } catch (update_session_error) {
                                     console.error(update_session_error);
                   
@@ -67,25 +72,28 @@ export default class WebSocket {
                         }
                     );
 
-                    this.listenEvents()
+            
                     this.socket.on(this.ws_listeners.session.disconnect, () =>
-                        console.log(
+                        {
+                            this.messages = []
+                            console.log(
                             `🚪 [websocket]: User ${id} disconnected from Websocket Server.`
-                        )
+                        )}
                     );
                 }
             );
 
     }
 
-    listenEvents() {
+    listenEvents(socket_session_id, messages) {
         /**
          * * Chat Events Listeners
          */
         new ChatWebSocketEvents(
             this.io,
             this.socket,
-            this.socket_session_id
+            socket_session_id,
+            this.messages
         ).listenEvents();
 
         /**
@@ -95,7 +103,7 @@ export default class WebSocket {
         new MovementWebSocketEvents(
             this.io,
             this.socket,
-            this.socket_session_id
+            socket_session_id
         ).listenEvents();
     }
 }

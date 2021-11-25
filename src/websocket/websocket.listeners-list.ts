@@ -11,14 +11,15 @@ const MovementListeners: iListener = {
         handler: "ball-handler",
     },
     audio: {
-        handler: "audio-handler"
-    }
+        handler: "audio-handler",
+    },
 };
 
 const ChatListeners: iListener = {
     session: SessionListeners.session,
     chat: {
         new_message: "new-message",
+        update_messages: "update-messages",
     },
 };
 export { MovementListeners, SessionListeners, ChatListeners };
