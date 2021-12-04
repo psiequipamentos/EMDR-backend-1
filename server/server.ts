@@ -17,17 +17,6 @@ createConnection("default")
       ` ⚠ [database]: Default database was not connected! Error: ${database_connection_error}`
     )
   );
-
-if(process.env.HTTPS_MODE) {
-  app.enable('trust proxy')
-  app.use((req, res, next) => {
-    if(req.secure)
-      next()
-    else{
-      res.redirect(`https://${req.headers.host}${req.url}`)
-    }
-  })
-}
 // * Run server
 app.listen(port, () => {
   new WebsocketServer().run();
