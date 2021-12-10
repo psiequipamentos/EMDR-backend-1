@@ -12,10 +12,7 @@ app.use(cors());
 app.use(json());
 
 // * Alunos files
-app.use(
-  "/files/alunos/perfil",
-  express.static(path.join(__dirname, "../public/uploads/alunos/perfil"))
-);
+
 
 Object.keys(routes).forEach((route) =>
   app.use(routes[route]["endpoint"], routes[route]["router"])
