@@ -1,5 +1,7 @@
 import { getRepository } from "typeorm";
 import models from "../models/init";
+import Psicologo from "../models/Psicologo";
+import Sessions from "../models/Sessions";
 import MasterRepository from "./master-repository";
 
 export default class SessionRepository extends MasterRepository {
@@ -7,6 +9,30 @@ export default class SessionRepository extends MasterRepository {
     super(models.Sessions);
     this.relations = ['psicologo','paciente']
   }
+
+  create = async (data: any): Promise<Object> => {
+    const repo = getRepository(this.model, "default");
+
+    let new_data = {};
+    let existing: any = {}
+    try {
+      existing = await repo.findOne({where: {
+        paciente: data.paciente,
+        psicologo: data.psicologo
+      }})
+    }catch(err){
+      console.log(err)
+    }
+    if(existing)
+      await repo.delete(existing.id)
+   try {
+      new_data = await repo.save(data);
+    } catch (error) {
+
+      return { created: false, error: error.message, repository: this.model };
+    }
+    return { created: true, new_data: new_data }; 
+  };
 
   readOneBySessionId = async (session_id: any): Promise<Object> => {
     return new Promise((resolve, reject) => {

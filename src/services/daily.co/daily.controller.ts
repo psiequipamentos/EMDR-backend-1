@@ -1,5 +1,10 @@
 import DailyService from "./daily.service";
 import { Request, Response } from "express";
+import repositories from "../../repository/init";
+import {config} from 'dotenv'
+
+config();
+
 export default class DailyController {
   private daily_service: DailyService;
   constructor() {
@@ -8,8 +13,19 @@ export default class DailyController {
   createRoom = async (req: Request, res: Response) => {
     const { error, data }: iDailyServiceReturn =
       await this.daily_service.createRoom();
+    
+    const session_repo = new repositories.SessionRepository();
+    const session_code = data.url.split('/')[3]
+    const session_data = {
+      session_id: data.id,
+      psicologo: req.body.psicologo,
+      paciente: req.body.paciente,
+      session_code,
+      daily_co_name: data.name
+    }
+    const new_session = await session_repo.create(session_data);
 
-    return res.status(error ? 500 : 200).send(data);
+    return res.status(error ? 500 : 200).send(new_session);
   };
 
   allRooms = async (req: Request, res: Response) => {

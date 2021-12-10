@@ -8,18 +8,22 @@ export default class Sessions extends MasterModel {
   @Column({ nullable: false, unique: true })
   session_id: string;
 
-  @ManyToOne(() => Psicologo, (psicologo) => psicologo.id)
+  @ManyToOne(() => Psicologo, (psicologo) => psicologo.psicologo_sessions)
   psicologo: Psicologo;
 
-  @ManyToOne(() => Paciente, (paciente) => paciente.id)
+  @ManyToOne(() => Paciente, (paciente) => paciente.pacient_sessions)
   paciente: Paciente;
 
-  @Column()
+  @Column({nullable: true})
   paciente_socket_id: string;
 
-  @Column()
+  @Column({nullable:true})
   psicologo_socket_id: string;
 
   @Column({ nullable: false, unique: true })
-  session_link: string;
+  session_code: string;
+
+  @Column({unique:true})
+  daily_co_name: string;
+
 }
