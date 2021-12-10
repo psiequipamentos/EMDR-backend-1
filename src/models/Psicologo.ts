@@ -11,7 +11,7 @@ export default class Psicologo extends MasterModel {
   @Column({ nullable: false })
   nome: string;
 
-  @OneToMany(()=> Sessions, (session) => session.id)
+  @OneToMany(()=> Sessions, (session) => session.psicologo, {eager:true})
   psicologo_sessions: Sessions[]
 
   @Column({ nullable: false })
@@ -19,6 +19,5 @@ export default class Psicologo extends MasterModel {
 
   @Column({ nullable: false })
   senha: string;
-
 
 }

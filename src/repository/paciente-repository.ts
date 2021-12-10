@@ -5,6 +5,7 @@ export default class PacienteRepository extends MasterRepository {
 
     constructor(){
         super(models.Paciente);
+        this.relations = ['pacient_sessions']
     }
 
 }

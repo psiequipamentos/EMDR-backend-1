@@ -11,10 +11,10 @@ export default class Paciente extends MasterModel {
   @Column({ nullable: false })
   nome: string;
 
-  @OneToMany(()=> Sessions, (session) => session.id)
+  @OneToMany(()=> Sessions, (session) => session.paciente,{eager: true})
   pacient_sessions: Sessions[]
-  
-  @Column({ nullable: false })
+
+  @Column({ nullable: true })
   pais: string;
 
   @Column({ nullable: false })
