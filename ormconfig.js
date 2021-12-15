@@ -7,10 +7,10 @@ console.log(`🔃 [database sync]: ${sync}`);
 module.exports = {
   name: "default",
   type: "mysql",
-  host: "localhost",
+  host: "ec2-15-228-197-218.sa-east-1.compute.amazonaws.com",
   port: 3306,
-  username: "luspew",
-  password: "luspew",
+  username: "emdraccess",
+  password: "emdr3xp$",
   database: "emdr",
   synchronize: sync,
   logging: false,
