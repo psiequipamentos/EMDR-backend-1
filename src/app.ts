@@ -7,6 +7,7 @@ const app = express();
 
 import routes from "./routes/routes";
 import path = require("path");
+import AuthControllers from "./controllers/auth-controllers";
 
 app.use(cors());
 app.use(json());
@@ -19,4 +20,9 @@ Object.keys(routes).forEach((route) =>
 );
 const daily_routes: DailyRoutes = new DailyRoutes();
 app.use("/daily", daily_routes.router);
+
+const auth_controllers = new AuthControllers()
+
+app.post('/auth/token',auth_controllers.verifyToken)
+app.post('/auth/token/data',auth_controllers.getTokenData)
 export default app;
