@@ -7,7 +7,7 @@ export default class MovementWebSocketEvents {
     private sessionRepository: SessionRepository;
     private ws_listeners: iListener;
     private socket: Socket;
-    private socket_session_id: string | boolean;
+    private socket_session_id: any
     constructor(
         io: SocketServer,
         socket: Socket,
@@ -26,9 +26,10 @@ export default class MovementWebSocketEvents {
         this.socket.on(
             this.ws_listeners.ball.handler,
             async (action: iAction) => {
+                console.log(this.socket_session_id)
                 try {
                     const session: any =
-                        await this.sessionRepository.readOneBySessionId(
+                        await this.sessionRepository.readOneBySessionCode(
                             this.socket_session_id
                         );
                     if (!session) {
@@ -52,7 +53,7 @@ export default class MovementWebSocketEvents {
             async (action: iAction) => {
                 try {
                     const session: any =
-                        await this.sessionRepository.readOneBySessionId(
+                        await this.sessionRepository.readOneBySessionCode(
                             this.socket_session_id
                         );
                     if (!session) {

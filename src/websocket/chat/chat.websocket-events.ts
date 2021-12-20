@@ -23,6 +23,7 @@ export default class ChatWebSocketEvents {
          * * Chat Handler
          */
         console.log(this.ws_listeners.chat.new_message);
+
         this.socket.on(
             this.ws_listeners.chat.new_message,
             async (action: any) => {
@@ -32,7 +33,7 @@ export default class ChatWebSocketEvents {
                     let session:any
                     try {
                     session =
-                        await this.sessionRepository.readOneBySessionId(
+                        await this.sessionRepository.readOneBySessionCode(
                             this.socket_session_id
                         );
                         const [user_type, recipient_id]: any = Object.entries(
@@ -69,7 +70,6 @@ export default class ChatWebSocketEvents {
             console.log(this.messages)
             this.io.to(id).emit(this.ws_listeners.chat.update_messages,this.messages)
         })
-
-
+        
     }
 }

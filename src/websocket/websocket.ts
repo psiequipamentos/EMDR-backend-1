@@ -12,14 +12,16 @@ export default class WebSocket {
     private socket_session_id: string;
     private socket: Socket;
     public messages: any
+    private connections:any
     constructor(io: SocketServer) {
         this.io = io;
         this.ws_listeners = SessionListeners;
         this.sessionRepository = new SessionRepository();
+        this.connections = []
     }
 
     start() {
-        this.messages = []
+        this.messages = {}
             this.io.on(
                 this.ws_listeners.session.connection,
                 (socket: Socket) => {
@@ -33,17 +35,17 @@ export default class WebSocket {
                      */
                     this.socket.on(
                         this.ws_listeners.session.join_session,
-                        async ({ session_id, user }) => {
-                            if (!session_id || !user) {
+                        async ({ session_code, user }) => {
+                            if (!session_code || !user) {
                                 console.error("lacks information");
                                 return false;
                             }
-
-                            console.log(`THE USER IS : ${user.type}`)
+                            
+                            console.log(user)
                             try {
                                 const session: any =
-                                    await this.sessionRepository.readOneBySessionId(
-                                        session_id
+                                    await this.sessionRepository.readOneBySessionCode(
+                                        session_code
                                     );
                                 if (!session) {
                                     console.error("not found");
@@ -58,8 +60,8 @@ export default class WebSocket {
                                     );
                                     console.log("Updated session.");
                                     console.log(session.session_id)
-                                    this.socket_session_id = session.session_id;
-                                    this.listenEvents(session.session_id, this.messages)
+                                    this.socket_session_id = session_code;
+                                    this.listenEvents(session_code, this.messages)
                                 } catch (update_session_error) {
                                     console.error(update_session_error);
                   
@@ -71,14 +73,44 @@ export default class WebSocket {
                             }
                         }
                     );
-
-            
+                    this.socket.on('user-joined',async ({codigo}) => {
+                        const code = codigo.split('/')[3]
+                        if(!this.connections[code])
+                            this.connections[code] = []
+                        
+                        const session: any =
+                            await this.sessionRepository.readOneBySessionCode(
+                                code
+                            );
+                        if (!session) {
+                            console.error("not found");
+                            return false;
+                        }
+                        this.connections[code].push(id)
+                        if(this.connections[code].length >= 2){
+                            this.io.to(session.psicologo_socket_id).emit('start-cron',{paciente: session.paciente.nome})
+                            this.io.to(session.paciente_socket_id).emit('start-cron')
+                        }
+                    })
+                    this.socket.on('end-call', async ({code}) => {
+                        const session: any =
+                            await this.sessionRepository.readOneBySessionCode(
+                                code
+                            );
+                        if (!session) {
+                            console.error("not found");
+                            return false;
+                        }
+                        this.io.to(session.psicologo_socket_id).emit('end-call')
+                        this.io.to(session.paciente_socket_id).emit('end-call')
+                    })
                     this.socket.on(this.ws_listeners.session.disconnect, () =>
                         {
                             this.messages = []
+                            this.connections = {}
                             console.log(
-                            `🚪 [websocket]: User ${id} disconnected from Websocket Server.`
-                        )}
+                                `🚪 [websocket]: User ${id} disconnected from Websocket Server.`
+                            )}
                     );
                 }
             );

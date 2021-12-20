@@ -46,4 +46,13 @@ export default class SessionRepository extends MasterRepository {
         );
     });
   };
+
+  readOneBySessionCode = async(session_code:string) => {
+    return new Promise((resolve,reject) => {
+      const repo = getRepository(this.model, 'default')
+      repo.findOne({where: {
+        session_code
+        }, relations:this.relations}).then((data) =>resolve(data)).catch((read_by_session_code_error) => reject(read_by_session_code_error.error))
+    })
+  }
 }
