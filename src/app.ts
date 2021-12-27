@@ -8,6 +8,7 @@ const app = express();
 import routes from "./routes/routes";
 import path = require("path");
 import AuthControllers from "./controllers/auth-controllers";
+import TwilioRoutes from "./services/twilio/twilio.routes";
 
 app.use(cors());
 app.use(json());
@@ -20,6 +21,9 @@ Object.keys(routes).forEach((route) =>
 );
 const daily_routes: DailyRoutes = new DailyRoutes();
 app.use("/daily", daily_routes.router);
+
+const twilio_routes: TwilioRoutes = new TwilioRoutes();
+app.use('/twilio', twilio_routes.router);
 
 const auth_controllers = new AuthControllers()
 
