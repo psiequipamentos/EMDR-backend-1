@@ -9,6 +9,7 @@ import routes from "./routes/routes";
 import path = require("path");
 import AuthControllers from "./controllers/auth-controllers";
 import TwilioRoutes from "./services/twilio/twilio.routes";
+import MailerRoutes from "./services/mailer/mailer.routes";
 
 app.use(cors());
 app.use(json());
@@ -25,8 +26,11 @@ app.use("/daily", daily_routes.router);
 const twilio_routes: TwilioRoutes = new TwilioRoutes();
 app.use('/twilio', twilio_routes.router);
 
-const auth_controllers = new AuthControllers()
+const mailer_routes: MailerRoutes = new MailerRoutes()
+app.use('/mailer', mailer_routes.router)
 
+const auth_controllers = new AuthControllers()
 app.post('/auth/token',auth_controllers.verifyToken)
 app.post('/auth/token/data',auth_controllers.getTokenData)
+
 export default app;
