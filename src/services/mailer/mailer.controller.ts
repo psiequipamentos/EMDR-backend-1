@@ -24,12 +24,18 @@ export default class MailerController {
 
   public sendMail = async (request: Request, response: Response) => {
     const { to, subject, text } = request.body;
-    const mail_response = await this.mailer_transport.sendMail({
-      from: process.env.MAILER_USER,
-      to,
-      subject,
-      text,
-    });
+    let mail_response;
+    try {
+      mail_response = await this.mailer_transport.sendMail({
+        from: process.env.MAILER_USER,
+        to,
+        subject,
+        text,
+      });
+      
+    } catch (error) {
+      console.log('erro')
+    }
 
     if (mail_response.rejected.length == 0) {
       return response.status(200).send({ error: false });
