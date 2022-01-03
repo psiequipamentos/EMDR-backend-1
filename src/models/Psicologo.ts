@@ -17,6 +17,9 @@ export default class Psicologo extends MasterModel {
   @Column({ nullable: false })
   telefone: string;
 
+  @Column({})
+  codigo_recuperacao: string;
+
   @Column({ nullable: false })
   senha: string;
 

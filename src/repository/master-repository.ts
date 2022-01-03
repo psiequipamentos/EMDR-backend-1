@@ -41,7 +41,7 @@ export default class MasterRepository {
   update = async (ID: any, new_data: any): Promise<Object> => {
     const repo = getRepository(this.model, "default");
     const data = await repo.findOne(ID);
-
+    
     let updated_data = {};
     try {
       updated_data = await repo.update(

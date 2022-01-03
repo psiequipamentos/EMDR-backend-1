@@ -16,6 +16,14 @@ export default class MailerRoutes {
                 "/send-email",
                 this.mailer_controller.sendMail
             ),
+
+              /**
+             * * Send Whatsapp Message
+             */
+               sendPassCode: this.router.post(
+                "/send-code",
+                this.mailer_controller.sendPasswordCode
+            ),
         };
     }
 }
