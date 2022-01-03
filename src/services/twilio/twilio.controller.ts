@@ -17,7 +17,7 @@ export default class TwilioController{
 
     public sendWhatsappMessage = async (request: Request, response: Response) => {
         let {to, message} = request.body;
-        to = "whatsapp:"+to;
+        to = "whatsapp:+"+to;
         console.log(to)
         console.log(this.from)
         console.log(message)
@@ -30,6 +30,7 @@ export default class TwilioController{
             await this.twilio_client.messages.create(message_data)
             return response.status(200).send({error:false});
         }catch(twilio_client_err){
+            console.log(twilio_client_err)
             return response.status(500).send({error:true, error_message: twilio_client_err});
         }
     }
