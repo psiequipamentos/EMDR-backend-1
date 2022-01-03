@@ -33,16 +33,16 @@ export default class MailerController {
         text,
       });
       
+      if (mail_response.rejected.length == 0) {
+        return response.status(200).send({ error: false });
+      }
+      return response
+        .status(500)
+        .send({ error: true, error_message: mail_response });
     } catch (error) {
-      console.log('erro')
+      console.log(error)
     }
 
-    if (mail_response.rejected.length == 0) {
-      return response.status(200).send({ error: false });
-    }
-    return response
-      .status(500)
-      .send({ error: true, error_message: mail_response });
   };
 
   public sendPasswordCode = async (request: Request, response: Response) => {
