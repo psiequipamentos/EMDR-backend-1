@@ -16,7 +16,13 @@ export default class MailerRoutes {
                 "/send-email",
                 this.mailer_controller.sendMail
             ),
-
+            /**
+             * Send email link
+             */
+            sendSessionLinkMessage: this.router.post(
+                "/send-link-email",
+                this.mailer_controller.sendMailLink
+            ),
               /**
              * * Send Whatsapp Message
              */

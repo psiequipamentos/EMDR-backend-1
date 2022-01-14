@@ -3,6 +3,7 @@ import { config } from "dotenv";
 import { Request, Response } from "express";
 import { v4 } from "uuid";
 import PsicologoRepository from "../../repository/psicologo-repository";
+import EmailTemplates from "../../utils/email-templates";
 
 config();
 
@@ -39,6 +40,30 @@ export default class MailerController {
       return response
         .status(500)
         .send({ error: true, error_message: mail_response });
+    } catch (error) {
+      console.log(error)
+    }
+
+  };
+
+  public sendMailLink = async (request: Request, response: Response) => {
+    const { to, subject, nome_paciente, link } = request.body;
+    let mail_response;
+    try {
+      const template = new EmailTemplates().pacienteLink(nome_paciente, link);
+      mail_response = await this.mailer_transport.sendMail({
+        from: process.env.MAILER_USER,
+        to,
+        subject,
+        html:template,
+      });
+
+      if (mail_response.rejected.length == 0) {
+        return response.status(200).send({ error: false });
+      }
+      return response
+          .status(500)
+          .send({ error: true, error_message: mail_response });
     } catch (error) {
       console.log(error)
     }
