@@ -39,6 +39,8 @@
     "uuid": "^8.3.2"
   },
   "scripts": {
-    "start": "nodemon ./server/server.ts"
+    "start": "nodemon ./server/server.ts",
+    "start:production": "ts-node ./server/server.ts"
+
   }
 }
