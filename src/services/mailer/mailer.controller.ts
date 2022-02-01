@@ -4,6 +4,7 @@ import { Request, Response } from "express";
 import { v4 } from "uuid";
 import PsicologoRepository from "../../repository/psicologo-repository";
 import EmailTemplates from "../../utils/email-templates";
+import * as hbs from 'nodemailer-express-handlebars';
 
 config();
 
@@ -50,12 +51,24 @@ export default class MailerController {
     const { to, subject, nome_paciente, link } = request.body;
     let mail_response;
     try {
+      this.mailer_transport.use('compile', hbs({
+        viewEngine: {
+          extname: '.handlebars',
+          layoutsDir: './mails/templates/',
+          defaultLayout: 'session-link'
+        },
+        viewPath: './mails/templates'
+      }))
       const template = new EmailTemplates().pacienteLink(nome_paciente, link);
       mail_response = await this.mailer_transport.sendMail({
         from: process.env.MAILER_USER,
         to,
         subject,
-        html:template,
+        template: 'session-link',
+        context: {
+          nome_paciente,
+          link
+        }
       });
 
       if (mail_response.rejected.length == 0) {
