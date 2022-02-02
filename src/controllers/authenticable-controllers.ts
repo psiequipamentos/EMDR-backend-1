@@ -26,10 +26,10 @@ export default class AuthenticableControllers extends MasterController {
   login = async (req, res): Promise<Response> => {
     const retorno = await this.repository.login(req.body);
 
-    if (!retorno) {
+    if (!retorno.auth) {
       return res
         .status(200)
-        .json({ auth: false, message: "User/Password incorrect(s)." });
+        .json(retorno);
     }
 
     res

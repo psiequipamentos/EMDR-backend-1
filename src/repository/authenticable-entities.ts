@@ -20,8 +20,8 @@ export default class AuthenticableEntities extends MasterRepository {
         email: data.email,
       },
     });
-
     if (user && (await compare(data.senha, user.senha))) {
+    if(!user.email_verificado) return {auth: false, message: 'E-mail não verificado.' }
       const token = await createNewToken({
         userID: user.id,
       });
@@ -34,6 +34,6 @@ export default class AuthenticableEntities extends MasterRepository {
       await repo.save(save_data);
       const retorno = { auth: true, token: token, user: user };
       return retorno;
-    } else return false;
+    } else return {auth: false, message: 'Usuário e/ou senha incorreto(s).'};
   };
 }

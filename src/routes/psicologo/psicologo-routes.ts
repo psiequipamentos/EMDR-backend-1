@@ -17,6 +17,13 @@ export default class PsicologoRoutes extends AuthenticableRoutes {
         endpoint: this.router.post("/recuperar-senha", this.controller.recuperarSenha),
       },
     };
+
+    this.endpoints["validar-email"] = {
+      validar_email: {
+        endpoint: this.router.patch("/validar-email/:id", this.controller.validarEmail),
+      },
+    };
+
   }
 
 }

@@ -59,7 +59,6 @@ export default class MailerController {
         },
         viewPath: './mails/templates'
       }))
-      const template = new EmailTemplates().pacienteLink(nome_paciente, link);
       mail_response = await this.mailer_transport.sendMail({
         from: process.env.MAILER_USER,
         to,
@@ -82,6 +81,40 @@ export default class MailerController {
     }
 
   };
+
+  public sendVerificationLink = async(request: Request, response: Response) => {
+    const { to, subject, nome_psicologo, link } = request.body;
+    let mail_response;
+    try {
+      this.mailer_transport.use('compile', hbs({
+        viewEngine: {
+          extname: '.handlebars',
+          layoutsDir: './mails/templates/',
+          defaultLayout: 'verification-link'
+        },
+        viewPath: './mails/templates'
+      }))
+      mail_response = await this.mailer_transport.sendMail({
+        from: process.env.MAILER_USER,
+        to,
+        subject,
+        template: 'verification-link',
+        context: {
+          nome_psicologo,
+          link
+        }
+      });
+
+      if (mail_response.rejected.length == 0) {
+        return response.status(200).send({ error: false });
+      }
+      return response
+          .status(500)
+          .send({ error: true, error_message: mail_response });
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   public sendPasswordCode = async (request: Request, response: Response) => {
     const { email } = request.body;

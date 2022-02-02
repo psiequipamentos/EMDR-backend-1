@@ -27,4 +27,7 @@ export default class Psicologo extends MasterModel {
   @Column({ nullable: false })
   senha: string;
 
+  @Column({default: false})
+  email_verificado: boolean
+
 }

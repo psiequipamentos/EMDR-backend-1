@@ -30,6 +30,13 @@ export default class MailerRoutes {
                 "/send-code",
                 this.mailer_controller.sendPasswordCode
             ),
+            /**
+             * * Send Verification mail
+             */
+            sendVerificationLink: this.router.post(
+                "/send-verification-link",
+                this.mailer_controller.sendVerificationLink
+            ),
         };
     }
 }
