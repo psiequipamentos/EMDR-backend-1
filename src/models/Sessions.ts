@@ -8,10 +8,10 @@ export default class Sessions extends MasterModel {
   @Column({ nullable: false, unique: true })
   session_id: string;
 
-  @ManyToOne(() => Psicologo, (psicologo) => psicologo.psicologo_sessions)
+  @ManyToOne(() => Psicologo, (psicologo) => psicologo.psicologo_sessions, {onDelete: 'CASCADE'})
   psicologo: Psicologo;
 
-  @ManyToOne(() => Paciente, (paciente) => paciente.pacient_sessions)
+  @ManyToOne(() => Paciente, (paciente) => paciente.pacient_sessions, {onDelete: 'CASCADE'})
   paciente: Paciente;
 
   @Column({nullable: true})

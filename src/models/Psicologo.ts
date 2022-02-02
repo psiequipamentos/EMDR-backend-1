@@ -12,10 +12,10 @@ export default class Psicologo extends MasterModel {
   @Column({ nullable: false })
   nome: string;
 
-  @OneToMany(()=> Sessions, (session) => session.psicologo, {eager:true})
+  @OneToMany(()=> Sessions, (session) => session.psicologo, {eager:true, onDelete: 'CASCADE'})
   psicologo_sessions: Sessions[]
 
-  @OneToMany(() => Paciente, (paciente) => paciente.psicologo,{eager: true} )
+  @OneToMany(() => Paciente, (paciente) => paciente.psicologo,{eager: true, onDelete: 'CASCADE'} )
   pacientes: Paciente[]
 
   @Column({ nullable: false })
