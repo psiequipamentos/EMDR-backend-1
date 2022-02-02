@@ -14,12 +14,12 @@ export default class MailerController {
     this.mailer_transport = createTransport({
       host: process.env.MAILER_HOST,
       port: parseInt(process.env.MAILER_PORT),
-      secure: false,
+      secure: true,
       auth: {
         user: process.env.MAILER_USER,
         pass: process.env.MAILER_PASS,
       },
-      tls: { rejectUnauthorized: false },
+      //tls: { rejectUnauthorized: false },
       logger: true,
     });
   }

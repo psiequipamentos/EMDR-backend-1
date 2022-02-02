@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import MasterModel from "./MasterModel";
 import Paciente from "./Paciente";
 import Psicologo from "./Psicologo";
@@ -8,16 +8,18 @@ export default class Sessions extends MasterModel {
   @Column({ nullable: false, unique: true })
   session_id: string;
 
-  @ManyToOne(() => Psicologo, (psicologo) => psicologo.psicologo_sessions, {onDelete: 'CASCADE'})
+  @ManyToOne(() => Psicologo, (psicologo) => psicologo.psicologo_sessions)
+  @JoinColumn()  
   psicologo: Psicologo;
 
-  @ManyToOne(() => Paciente, (paciente) => paciente.pacient_sessions, {onDelete: 'CASCADE'})
+  @ManyToOne(() => Paciente, (paciente) => paciente.pacient_sessions)
+  @JoinColumn()
   paciente: Paciente;
 
-  @Column({nullable: true})
+  @Column({default: ''})
   paciente_socket_id: string;
 
-  @Column({nullable:true})
+  @Column({default:''})
   psicologo_socket_id: string;
 
   @Column({ nullable: false, unique: true })

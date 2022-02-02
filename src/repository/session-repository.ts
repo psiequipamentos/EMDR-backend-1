@@ -11,6 +11,7 @@ export default class SessionRepository extends MasterRepository {
   }
 
   create = async (data: any): Promise<Object> => {
+    console.log(data)
     const repo = getRepository(this.model, "default");
 
     let new_data = {};
@@ -21,6 +22,7 @@ export default class SessionRepository extends MasterRepository {
         psicologo: data.psicologo
       }})
     }catch(err){
+
       console.log(err)
     }
     if(existing)
@@ -28,7 +30,7 @@ export default class SessionRepository extends MasterRepository {
    try {
       new_data = await repo.save(data);
     } catch (error) {
-
+      console.log(error)
       return { created: false, error: error.message, repository: this.model };
     }
     return { created: true, new_data: new_data }; 
