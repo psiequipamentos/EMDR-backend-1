@@ -4,14 +4,23 @@ dotenv.config();
 const sync = process.env.SYNC ? true : false;
 console.log(`🔃 [database sync]: ${sync}`);
 
+const {
+  DATABASE_HOST,
+  DATABASE_PORT,
+  DATABASE_USER,
+  DATABASE_PASSWORD,
+  DATABASE_NAME,
+  DATABASE_TYPE,
+} = process.env;
+
 module.exports = {
   name: "default",
-  type: "mysql",
-  host: "mysql02-farm36.kinghost.net",
-  port: 3306,
-  username: "thetracker05",
-  password: "emdr3xp",
-  database: "thetracker05",
+  type: DATABASE_TYPE,
+  host: DATABASE_HOST,
+  port: DATABASE_PORT,
+  username: DATABASE_USER,
+  password: DATABASE_PASSWORD,
+  database: DATABASE_NAME,
   synchronize: sync,
   logging: false,
   entities: ["src/models/**/*.ts"],
