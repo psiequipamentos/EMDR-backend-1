@@ -35,7 +35,7 @@ if(process.env.HTTPS_MODE) {
   })
 }
 // * Run server
-app.listen(8080, 'https://king-prawn-app.ondigitalocean.app/', () => {
+app.listen(8080, '0.0.0.0', () => {
   new WebsocketServer().run();
   console.log(`🚀 [server]: Server is running at :${port}.`);
 });
