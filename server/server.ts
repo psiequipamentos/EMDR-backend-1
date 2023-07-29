@@ -18,6 +18,12 @@ createConnection("default")
     )
   );
 
+
+  // Rota de health check
+  app.get('/health', (req, res) => {
+  res.send('OK');
+  });
+
 if(process.env.HTTPS_MODE) {
   app.enable('trust proxy')
   app.use((req, res, next) => {
@@ -29,7 +35,7 @@ if(process.env.HTTPS_MODE) {
   })
 }
 // * Run server
-app.listen(port, () => {
+app.listen(8080, 'https://king-prawn-app.ondigitalocean.app/', () => {
   new WebsocketServer().run();
   console.log(`🚀 [server]: Server is running at :${port}.`);
 });
