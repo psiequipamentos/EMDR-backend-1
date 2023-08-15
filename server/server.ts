@@ -19,7 +19,7 @@ createConnection("default")
   );
 
 
-  // Rota de health check
+  // Rota de health check     - Esse método estava no health check Coloquei aqui pra testar.
   app.get('/health', (req, res) => {
   res.send('OK');
   });
@@ -35,7 +35,8 @@ if(process.env.HTTPS_MODE) {
   })
 }
 // * Run server
-app.listen(8080, '0.0.0.0', () => {
+//ESTAVA app.listen(port, ()=> {..)
+app.listen(80, '0.0.0.0', () => {
   new WebsocketServer().run();
   console.log(`🚀 [server]: Server is running at :${port}.`);
 });
