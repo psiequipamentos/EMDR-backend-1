@@ -36,7 +36,7 @@ if(process.env.HTTPS_MODE) {
 }
 // * Run server
 //ESTAVA app.listen(port, ()=> {..)
-app.listen(80, '/emdrremoto.com.br/', () => {
+app.listen(80, '0.0.0.0', () => {
   new WebsocketServer().run();
   console.log(`🚀 [server]: Server is running at :${port}.`);
 });
