@@ -24,8 +24,10 @@ export default class AuthenticableControllers extends MasterController {
   };
 
   login = async (req, res): Promise<Response> => {
+    console.log('antes');
+  console.log(req);
     const retorno = await this.repository.login(req.body);
-
+	console.log('depois');
     if (!retorno.auth) {
       return res
         .status(200)

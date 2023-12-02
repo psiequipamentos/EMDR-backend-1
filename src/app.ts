@@ -18,19 +18,19 @@ app.use(json());
 
 
 Object.keys(routes).forEach((route) =>
-  app.use(routes[route]["endpoint"], routes[route]["router"])
+  app.use('/emdr-api' + routes[route]["endpoint"], routes[route]["router"])
 );
 const daily_routes: DailyRoutes = new DailyRoutes();
-app.use("/daily", daily_routes.router);
+app.use('/emdr-api' + "/daily", daily_routes.router);
 
 const twilio_routes: TwilioRoutes = new TwilioRoutes();
-app.use('/twilio', twilio_routes.router);
+app.use('/emdr-api' + '/twilio', twilio_routes.router);
 
 const mailer_routes: MailerRoutes = new MailerRoutes()
-app.use('/mailer', mailer_routes.router)
+app.use('/emdr-api' + '/mailer', mailer_routes.router)
 
 const auth_controllers = new AuthControllers()
-app.post('/auth/token',auth_controllers.verifyToken)
-app.post('/auth/token/data',auth_controllers.getTokenData)
+app.post('/emdr-api' + '/auth/token',auth_controllers.verifyToken)
+app.post('/emdr-api' + '/auth/token/data',auth_controllers.getTokenData)
 
 export default app;

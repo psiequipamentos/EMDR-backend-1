@@ -6,7 +6,7 @@ import WebsocketServer from "./websocket.server";
 
 dotenv.config();
 const port: string = process.env.PORT;
-
+console.log(process.env)
 // * Connect database default
 createConnection("default")
   .then((_) =>
@@ -21,6 +21,7 @@ createConnection("default")
 
   // Rota de health check     - Esse método estava no health check Coloquei aqui pra testar.
   app.get('/health', (req, res) => {
+  console.log(res);
   res.send('OK');
   });
 
@@ -36,7 +37,7 @@ if(process.env.HTTPS_MODE) {
 }
 // * Run server
 //ESTAVA app.listen(port, ()=> {..)
-app.listen(80, '0.0.0.0', () => {
+app.listen(port, () => {
   new WebsocketServer().run();
   console.log(`🚀 [server]: Server is running at :${port}.`);
 });
