@@ -1796,10 +1796,10 @@ typeorm@^0.2.36:
     yargs "^17.0.1"
     zen-observable-ts "^1.0.0"
 
-typescript@3.3.3333:
-  version "3.3.3333"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-3.3.3333.tgz"
-  integrity sha512-JjSKsAfuHBE/fB2oZ8NxtRTk5iGcg6hkYXMnZ3Wc+b2RSqejEqTaem11mHASMnFilHrax3sLK0GDzcJrekZYLw==
+typescript@^5.0.4:
+  version "5.3.3"
+  resolved "https://registry.npmjs.org/typescript/-/typescript-5.3.3.tgz"
+  integrity sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==
 
 uglify-js@^3.1.4:
   version "3.17.4"

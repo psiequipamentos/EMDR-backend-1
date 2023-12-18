@@ -17,6 +17,7 @@ export default class WebsocketServer {
     this.io = new SocketServer(this.server, {
       cors: {
         origin: "*",
+        allowedHeaders: "Content-Type"
       },
     });
   }
@@ -27,7 +28,7 @@ export default class WebsocketServer {
     web_socket.start();
     this.server.listen(this.port, () =>
       console.log(
-        `🤝 [websocket server]: WebSocket server running at :${this.port}`
+        `🤝 [websocket server]: WebSocket server running at: ${this.port}`
       )
     );
   };

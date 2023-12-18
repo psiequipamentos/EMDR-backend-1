@@ -31,7 +31,7 @@ if(process.env.HTTPS_MODE) {
     if(req.secure)
       next()
     else{
-      res.redirect(`https://${req.headers.host}${req.url}`)
+      res.redirect(`http://${req.headers.host}${req.url}`)
     }
   })
 }
@@ -39,5 +39,5 @@ if(process.env.HTTPS_MODE) {
 //ESTAVA app.listen(port, ()=> {..)
 app.listen(port, () => {
   new WebsocketServer().run();
-  console.log(`🚀 [server]: Server is running at :${port}.`);
+  console.log(`🚀 [server]: Server is running at: ${port}.`);
 });
