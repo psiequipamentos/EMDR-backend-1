@@ -7,8 +7,8 @@ services:
                         - /usr/app/
                         - /usr/app/node_modules
                 ports:
-                         - "3001:3001"
-                         - "3002:3002"
+                        - "3001:3001"
+                        - "3002:3002"
                 environment:
                         - SECRET_KEY=emdr3xp
                         - PORT=3002
@@ -22,7 +22,7 @@ services:
                         - MAILER_PORT=465
                         - MAILER_USER=contact@equipamentospsi.com
                         - MAILER_PASS=eu1Z%d06
-                        - DATABASE_HOST=equipamentospsi.com
+                        - DATABASE_HOST=app.equipamentospsi.com
                         - DATABASE_PORT=3306
                         - DATABASE_USER=emdr-v2
                         - DATABASE_PASSWORD=y83l7Fh1#
