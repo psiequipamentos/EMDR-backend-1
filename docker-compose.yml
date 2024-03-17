@@ -13,7 +13,7 @@ services:
                         - SECRET_KEY=emdr3xp
                         - PORT=3002
                         - SYNC=TRUE
-                        - DAILYCOAPIKEY=5cbedd991fbe5b230fd4bc9e72e85860d13235ee5cd254bb4b265621f1271efb
+                        - DAILYCOAPIKEY=1f154b8cfac0119377aab4d0b4ce3ea10d13e3a0e287a4441a2346a3190f9205
                         - WEBSOCKET_PORT=3001
                         - TWILIO_AUTH_TOKEN=bf593c3c33cc527656dcede84c05dc1f
                         - TWILIO_ACCOUNT_SID=AC03c5e8b254c18ee99cbab99044369ddf
