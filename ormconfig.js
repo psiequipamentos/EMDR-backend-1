@@ -23,12 +23,12 @@ module.exports = {
   database: DATABASE_NAME,
   synchronize: sync,
   logging: false,
-  entities: ["src/models/**/*.ts"],
-  migrations: ["src/migration/**/*.ts"],
-  subscribers: ["src/subscriber/**/*.ts"],
+  entities: [__dirname + "src/models/**/*.ts"],
+  migrations: [__dirname + "src/migration/**/*.ts"],
+  subscribers: [__dirname + "src/subscriber/**/*.ts"],
   cli: {
-    entitiesDir: "src/models",
-    migrationsDir: "src/migration",
-    subscribersDir: "src/subscriber",
+    entitiesDir: __dirname + "src/models",
+    migrationsDir: __dirname + "src/migration",
+    subscribersDir: __dirname + "src/subscriber",
   },
 };
