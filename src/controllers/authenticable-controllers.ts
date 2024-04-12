@@ -16,6 +16,11 @@ export default class AuthenticableControllers extends MasterController {
 
     req.body.senha = await hash(req.body.senha, 10);
 
+    if(req.body.email){
+      const user = await this.repository.searchForEmail(req.body.email);
+      if(user) return res.status(400).json({ created: false, message: "Email já cadastrado." });
+    }
+    
     const new_user = await this.repository.create(req.body);
 
     if (!new_user) return res.status(500).json(new_user);
