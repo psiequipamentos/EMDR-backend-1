@@ -31,7 +31,7 @@ if(process.env.HTTPS_MODE) {
     if(req.secure)
       next()
     else{
-      res.redirect(`http://${req.headers.host}${req.url}`)
+      res.redirect(`https://${req.headers.host}${req.url}`)
     }
   })
 }
