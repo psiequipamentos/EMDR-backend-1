@@ -25,7 +25,7 @@ export default class MailerController {
   }
 
   public sendMail = async (request: Request, response: Response) => {
-    const { to, code, nome } = request.body;
+    const { to, subject, code, nome } = request.body;
     let mail_response;
     try {
       this.mailer_transport.use('compile', hbs({
@@ -40,6 +40,7 @@ export default class MailerController {
       mail_response = await this.mailer_transport.sendMail({
         from: process.env.MAILER_USER,
         to,
+        subject,
         template: 'send-code',
         context: {
           code,
@@ -142,6 +143,7 @@ export default class MailerController {
         console.log(err)
     }
     request.body.to = email;
+    request.body.subject = 'Código de recuperação de senha';
     request.body.nome = psicologo.nome;
     request.body.code = `${code}`
     try {
