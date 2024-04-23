@@ -82,10 +82,10 @@ export default class WebSocket {
                         await this.sessionRepository.readOneBySessionCode(
                             code
                         );
-                    await this.sessionRepository.update(
-                        session.id,
+                    await this.sessionRepository.updateOneBySessionId(
+                        code,
                         {
-                            session_out: Date.now(),
+                            paciente_in: Date.now(),
                         }
                     );
                     if (!session) {
@@ -95,10 +95,10 @@ export default class WebSocket {
                     this.connections[code].push(id)
                     if (this.connections[code].length >= 2) {
                         this.io.to(session.psicologo_socket_id).emit('start-cron', { paciente: session.paciente.nome })
-                        await this.sessionRepository.update(
-                            session.id,
+                        await this.sessionRepository.updateOneBySessionId(
+                            code,
                             {
-                                paciente_in: Date.now(),
+                                psicologo_in: Date.now(),
                             }
                         );
                         this.io.to(session.paciente_socket_id).emit('start-cron')
@@ -109,8 +109,8 @@ export default class WebSocket {
                         await this.sessionRepository.readOneBySessionCode(
                             code
                         );
-                    await this.sessionRepository.update(
-                        session.id,
+                    await this.sessionRepository.updateOneBySessionId(
+                        code,
                         {
                             session_out: Date.now(),
                         }
