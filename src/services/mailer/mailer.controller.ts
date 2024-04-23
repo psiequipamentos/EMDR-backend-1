@@ -25,14 +25,26 @@ export default class MailerController {
   }
 
   public sendMail = async (request: Request, response: Response) => {
-    const { to, subject, text } = request.body;
+    const { to, code, nome } = request.body;
     let mail_response;
     try {
+      this.mailer_transport.use('compile', hbs({
+        viewEngine: {
+          extname: '.handlebars',
+          layoutsDir: './mails/templates/',
+          defaultLayout: 'send-code'
+        },
+        viewPath: './mails/templates'
+      }))
+
       mail_response = await this.mailer_transport.sendMail({
         from: process.env.MAILER_USER,
         to,
-        subject,
-        text,
+        template: 'send-code',
+        context: {
+          code,
+          nome
+        }
       });
       
       if (mail_response.rejected.length == 0) {
@@ -130,8 +142,8 @@ export default class MailerController {
         console.log(err)
     }
     request.body.to = email;
-    request.body.subject = "Código de recuperação de senha"
-    request.body.text = `Seu código de recuperação é: ${code}`
+    request.body.nome = psicologo.nome;
+    request.body.code = `${code}`
     try {
        console.log( await this.sendMail(request, response))
     } catch (error) {
