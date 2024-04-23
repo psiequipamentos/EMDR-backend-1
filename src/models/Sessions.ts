@@ -28,4 +28,12 @@ export default class Sessions extends MasterModel {
   @Column({unique:true})
   daily_co_name: string;
 
+  @Column({default:null})
+  paciente_in: Date;
+
+  @Column({default:null})
+  psicologo_in: Date;
+
+  @Column({default:null})
+  session_out: Date;
 }
