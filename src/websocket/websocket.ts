@@ -76,7 +76,7 @@ export default class WebSocket {
                 );
                 this.socket.on('user-joined', async ({codigo}) => {
                     const code = codigo.split('/')[3]
-                    const pacienteOrPsicologo = codigo.split('/')[2]
+                    const pacienteOrPsicologo = codigo.split('/')[1]
                     if (!this.connections[code])
                         this.connections[code] = []
 
