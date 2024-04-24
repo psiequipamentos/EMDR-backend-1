@@ -107,7 +107,6 @@ export default class WebSocket {
                     }
 
                     if (this.connections[code].length >= 2) {
-                        console.log('start-cron')
                         this.io.to(session.psicologo_socket_id).emit('start-cron', {paciente: session.paciente.nome})
                         this.io.to(session.paciente_socket_id).emit('start-cron')
                     }
