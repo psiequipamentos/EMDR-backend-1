@@ -76,6 +76,7 @@ export default class WebSocket {
                 );
                 this.socket.on('user-joined', async ({codigo}) => {
                     const code = codigo.split('/')[3]
+                    const pacienteOrPsicologo = codigo.split('/')[2]
                     if (!this.connections[code])
                         this.connections[code] = []
 
@@ -88,23 +89,27 @@ export default class WebSocket {
                         return false;
                     }
                     this.connections[code].push(id)
-                    if (this.connections[code].length >= 2) {
-                        console.log('start-cron')
-                        this.io.to(session.psicologo_socket_id).emit('start-cron', {paciente: session.paciente.nome})
+
+                    if (pacienteOrPsicologo === 'paciente') {
                         await this.sessionRepository.updateOneBySessionId(
                             code,
                             {
                                 paciente_in: new Date(),
                             }
                         );
-                        this.io.to(session.paciente_socket_id).emit('start-cron')
-                    } else {
+                    } else if (pacienteOrPsicologo === 'psicologo') {
                         await this.sessionRepository.updateOneBySessionId(
                             code,
                             {
                                 psicologo_in: new Date(),
                             }
                         );
+                    }
+
+                    if (this.connections[code].length >= 2) {
+                        console.log('start-cron')
+                        this.io.to(session.psicologo_socket_id).emit('start-cron', {paciente: session.paciente.nome})
+                        this.io.to(session.paciente_socket_id).emit('start-cron')
                     }
                 })
                 this.socket.on('end-call', async ({code}) => {
