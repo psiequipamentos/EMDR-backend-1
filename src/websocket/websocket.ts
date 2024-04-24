@@ -83,26 +83,28 @@ export default class WebSocket {
                         await this.sessionRepository.readOneBySessionCode(
                             code
                         );
-                    await this.sessionRepository.updateOneBySessionId(
-                        code,
-                        {
-                            paciente_in: new Date(),
-                        }
-                    );
                     if (!session) {
                         console.error("not found");
                         return false;
                     }
                     this.connections[code].push(id)
                     if (this.connections[code].length >= 2) {
+                        console.log('start-cron')
                         this.io.to(session.psicologo_socket_id).emit('start-cron', {paciente: session.paciente.nome})
+                        await this.sessionRepository.updateOneBySessionId(
+                            code,
+                            {
+                                paciente_in: new Date(),
+                            }
+                        );
+                        this.io.to(session.paciente_socket_id).emit('start-cron')
+                    } else {
                         await this.sessionRepository.updateOneBySessionId(
                             code,
                             {
                                 psicologo_in: new Date(),
                             }
                         );
-                        this.io.to(session.paciente_socket_id).emit('start-cron')
                     }
                 })
                 this.socket.on('end-call', async ({code}) => {
