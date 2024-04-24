@@ -105,6 +105,8 @@ export default class WebSocket {
                             }
                         );
                     }
+                    
+                    console.log(codigo.split('/'))
 
                     if (this.connections[code].length >= 2) {
                         this.io.to(session.psicologo_socket_id).emit('start-cron', {paciente: session.paciente.nome})
