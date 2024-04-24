@@ -42,7 +42,24 @@ export default class WebSocket {
                             return false;
                         }
 
+                        if (user.type === 'paciente') {
+                            await this.sessionRepository.updateOneBySessionId(
+                                session_code,
+                                {
+                                    paciente_in: new Date(),
+                                }
+                            );
+                        } else if (user.type === 'psicologo') {
+                            await this.sessionRepository.updateOneBySessionId(
+                                session_code,
+                                {
+                                    psicologo_in: new Date(),
+                                }
+                            );
+                        }
+                        
                         console.log(user)
+                        
                         try {
                             const session: any =
                                 await this.sessionRepository.readOneBySessionCode(
@@ -76,7 +93,7 @@ export default class WebSocket {
                 );
                 this.socket.on('user-joined', async ({codigo}) => {
                     const code = codigo.split('/')[3]
-                    const pacienteOrPsicologo = codigo.split('/')[2]
+                    
                     if (!this.connections[code])
                         this.connections[code] = []
 
@@ -88,26 +105,9 @@ export default class WebSocket {
                         console.error("not found");
                         return false;
                     }
-                    this.connections[code].push(id)
-
-                    if (pacienteOrPsicologo === 'paciente') {
-                        await this.sessionRepository.updateOneBySessionId(
-                            code,
-                            {
-                                paciente_in: new Date(),
-                            }
-                        );
-                    } else if (pacienteOrPsicologo === 'psicologo') {
-                        await this.sessionRepository.updateOneBySessionId(
-                            code,
-                            {
-                                psicologo_in: new Date(),
-                            }
-                        );
-                    }
                     
-                    console.log(codigo.split('/'))
-
+                    this.connections[code].push(id)
+                    
                     if (this.connections[code].length >= 2) {
                         this.io.to(session.psicologo_socket_id).emit('start-cron', {paciente: session.paciente.nome})
                         this.io.to(session.paciente_socket_id).emit('start-cron')
