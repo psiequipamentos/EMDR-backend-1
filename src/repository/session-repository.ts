@@ -36,12 +36,12 @@ export default class SessionRepository extends MasterRepository {
     return { created: true, new_data: new_data }; 
   };
 
-  updateOneBySessionId = async (session_id: any, new_data: any): Promise<Object> => {
+  updateOneBySessionId = async (session_code: any, new_data: any): Promise<Object> => {
     return new Promise((resolve, reject) => {
       const repo = getRepository(this.model, "default");
 
       repo
-        .update(session_id, new_data)
+        .update(new_data, {where: {session_code}})
         .then((data) => resolve(data))
         .catch((update_one_by_session_id_error) =>
           reject(update_one_by_session_id_error.error)
