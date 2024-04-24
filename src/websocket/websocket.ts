@@ -1,9 +1,9 @@
-import { Server as SocketServer, Socket } from "socket.io";
+import {Server as SocketServer, Socket} from "socket.io";
 import SessionRepository from "../repository/session-repository";
 import ChatWebSocketEvents from "./chat/chat.websocket-events";
 
 import MovementWebSocketEvents from "./frontend/events/movement.websocket-events";
-import { SessionListeners } from "./websocket.listeners-list";
+import {SessionListeners} from "./websocket.listeners-list";
 
 export default class WebSocket {
     private io: SocketServer;
@@ -13,6 +13,7 @@ export default class WebSocket {
     private socket: Socket;
     public messages: any
     private connections: any
+
     constructor(io: SocketServer) {
         this.io = io;
         this.ws_listeners = SessionListeners;
@@ -26,7 +27,7 @@ export default class WebSocket {
             this.ws_listeners.session.connection,
             (socket: Socket) => {
                 this.socket = socket;
-                const { id } = this.socket;
+                const {id} = this.socket;
                 console.log(
                     `👾 [websocket]: User ${id} connected on Websocket Server.`
                 );
@@ -35,7 +36,7 @@ export default class WebSocket {
                  */
                 this.socket.on(
                     this.ws_listeners.session.join_session,
-                    async ({ session_code, user }) => {
+                    async ({session_code, user}) => {
                         if (!session_code || !user) {
                             console.error("lacks information");
                             return false;
@@ -73,7 +74,7 @@ export default class WebSocket {
                         }
                     }
                 );
-                this.socket.on('user-joined', async ({ codigo }) => {
+                this.socket.on('user-joined', async ({codigo}) => {
                     const code = codigo.split('/')[3]
                     if (!this.connections[code])
                         this.connections[code] = []
@@ -85,7 +86,7 @@ export default class WebSocket {
                     await this.sessionRepository.updateOneBySessionId(
                         code,
                         {
-                            paciente_in: Date.now(),
+                            psicologo_in: new Date(),
                         }
                     );
                     if (!session) {
@@ -94,17 +95,17 @@ export default class WebSocket {
                     }
                     this.connections[code].push(id)
                     if (this.connections[code].length >= 2) {
-                        this.io.to(session.psicologo_socket_id).emit('start-cron', { paciente: session.paciente.nome })
+                        this.io.to(session.psicologo_socket_id).emit('start-cron', {paciente: session.paciente.nome})
                         await this.sessionRepository.updateOneBySessionId(
                             code,
                             {
-                                psicologo_in: Date.now(),
+                                paciente_in: new Date(),
                             }
                         );
                         this.io.to(session.paciente_socket_id).emit('start-cron')
                     }
                 })
-                this.socket.on('end-call', async ({ code }) => {
+                this.socket.on('end-call', async ({code}) => {
                     const session: any =
                         await this.sessionRepository.readOneBySessionCode(
                             code
@@ -112,7 +113,7 @@ export default class WebSocket {
                     await this.sessionRepository.updateOneBySessionId(
                         code,
                         {
-                            session_out: Date.now(),
+                            session_out: new Date()
                         }
                     );
                     if (!session) {
@@ -123,12 +124,12 @@ export default class WebSocket {
                     this.io.to(session.paciente_socket_id).emit('end-call')
                 })
                 this.socket.on(this.ws_listeners.session.disconnect, () => {
-                    this.messages = []
-                    this.connections = {}
-                    console.log(
-                        `🚪 [websocket]: User ${id} disconnected from Websocket Server.`
-                    )
-                }
+                        this.messages = []
+                        this.connections = {}
+                        console.log(
+                            `🚪 [websocket]: User ${id} disconnected from Websocket Server.`
+                        )
+                    }
                 );
             }
         );
