@@ -41,7 +41,7 @@ export default class SessionRepository extends MasterRepository {
       const repo = getRepository(this.model, "default");
 
       repo
-        .update({where: {session_code}}, new_data)
+        .update({session_code}, new_data)
         .then((data) => resolve(data))
         .catch((update_one_by_session_id_error) =>
           reject(update_one_by_session_id_error.error)
