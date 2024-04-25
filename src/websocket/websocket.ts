@@ -59,8 +59,6 @@ export default class WebSocket {
                             );
                         }
                         
-                        console.log(user)
-                        
                         try {
                             const session: any =
                                 await this.sessionRepository.readOneBySessionCode(
