@@ -56,6 +56,7 @@ export default class WebSocket {
                                     psicologo_in: new Date().toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'}),
                                 }
                             );
+                            console.log(new Date().toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'}));
                         }
                         
                         console.log(user)
