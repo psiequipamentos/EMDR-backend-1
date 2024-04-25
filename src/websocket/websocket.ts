@@ -46,17 +46,16 @@ export default class WebSocket {
                             await this.sessionRepository.updateOneBySessionId(
                                 session_code,
                                 {
-                                    paciente_in: new Date().toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'}),
+                                    paciente_in: new Date(),
                                 }
                             );
                         } else if (user.type === 'psicologo') {
                             await this.sessionRepository.updateOneBySessionId(
                                 session_code,
                                 {
-                                    psicologo_in: new Date().toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'}),
+                                    psicologo_in: new Date(),
                                 }
                             );
-                            console.log(new Date().toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'}));
                         }
                         
                         console.log(user)
@@ -122,7 +121,7 @@ export default class WebSocket {
                     await this.sessionRepository.updateOneBySessionId(
                         code,
                         {
-                            session_out: new Date().toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'})
+                            session_out: new Date(),
                         }
                     );
                     if (!session) {
