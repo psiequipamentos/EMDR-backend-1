@@ -41,19 +41,20 @@ export default class WebSocket {
                             console.error("lacks information");
                             return false;
                         }
-
+                        
+                        const localTime = new Date();
                         if (user.type === 'paciente') {
                             await this.sessionRepository.updateOneBySessionId(
                                 session_code,
                                 {
-                                    paciente_in: new Date(),
+                                    paciente_in: (new Date(localTime.getTime() - (3 * 60 * 60 * 1000))).toString,
                                 }
                             );
                         } else if (user.type === 'psicologo') {
                             await this.sessionRepository.updateOneBySessionId(
                                 session_code,
                                 {
-                                    psicologo_in: new Date(),
+                                    psicologo_in: (new Date(localTime.getTime() - (3 * 60 * 60 * 1000))).toString,
                                 }
                             );
                         }
@@ -118,10 +119,11 @@ export default class WebSocket {
                         await this.sessionRepository.readOneBySessionCode(
                             code
                         );
+                    const localTime = new Date();
                     await this.sessionRepository.updateOneBySessionId(
                         code,
                         {
-                            session_out: new Date(),
+                            session_out: (new Date(localTime.getTime() - (3 * 60 * 60 * 1000))).toString,
                         }
                     );
                     if (!session) {
