@@ -16,7 +16,7 @@ export default class SessionRepository extends MasterRepository {
 
     let new_data = {};
     let existing: any = {}
-    /* try {
+    try {
       existing = await repo.findOne({where: {
         paciente: data.paciente,
         psicologo: data.psicologo
@@ -26,7 +26,7 @@ export default class SessionRepository extends MasterRepository {
       console.log(err)
     }
     if(existing)
-      await repo.delete(existing.id) */
+      await repo.delete(existing.id)
    try {
       new_data = await repo.save(data);
     } catch (error) {
