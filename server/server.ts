@@ -19,18 +19,18 @@ createConnection("default")
   );
 
 
-  // Rota de health check     - Esse método estava no health check Coloquei aqui pra testar.
-  app.get('/health', (req, res) => {
+// Rota de health check     - Esse método estava no health check Coloquei aqui pra testar.
+app.get('/health', (req, res) => {
   console.log(res);
   res.send('OK');
-  });
+});
 
-if(process.env.HTTPS_MODE) {
+if (process.env.HTTPS_MODE) {
   app.enable('trust proxy')
   app.use((req, res, next) => {
-    if(req.secure)
+    if (req.secure)
       next()
-    else{
+    else {
       res.redirect(`https://${req.headers.host}${req.url}`)
     }
   })
